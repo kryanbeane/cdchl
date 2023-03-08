@@ -9,11 +9,12 @@ dynamo = boto3.resource('dynamodb').Table(tableName)
 
 def lambda_handler(event, context):
     try:
-        # payload = json.loads(event)
         item = {
             'Timestamp': str(datetime.now()),
             'SensorID': event['SensorID'],
-            'Reading': event['Reading'],
+            'Temperature': event['Temperature'],
+            'Humidity': event['Humidity'],
+            'Wind Speed': event['Wind Speed'],
         }
         dynamo.put_item(Item=item, ConditionExpression='attribute_not_exists(SensorID)')
         return {
