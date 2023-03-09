@@ -10,13 +10,14 @@ dynamo = boto3.resource('dynamodb').Table(tableName)
 def lambda_handler(event, context):
     try:
         item = {
-            'Timestamp': str(datetime.now()),
-            'SensorID': event['SensorID'],
-            'Temperature': event['Temperature'],
-            'Humidity': event['Humidity'],
-            'Wind Speed': event['Wind Speed'],
+            'timestamp': str(datetime.now()),
+            'date': datetime.now().strftime('%Y-%m-%d'),
+            'sensor_id': event['sensor_id'],
+            'temperature': event['temperature'],
+            'humidity': event['humidity'],
+            'wind_speed': event['wind_speed'],
         }
-        dynamo.put_item(Item=item, ConditionExpression='attribute_not_exists(SensorID)')
+        dynamo.put_item(Item=item, ConditionExpression='attribute_not_exists(sensor_id)')
         return {
             'statusCode': 200,
             'body': json.dumps('Successfully inserted item into DynamoDB table')
